@@ -5,27 +5,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <!-- CDN: Icons - Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <header>
       <h1>Tic Tac Toe</h1>
     </header>
-    <div class="box">
-      <div class="row">
-        <input type="text" class="btn" readonly />
-        <input type="text" class="btn" readonly />
-        <input type="text" class="btn" readonly />
-      </div>
-      <div class="row">
-        <input type="text" class="btn" readonly />
-        <input type="text" class="btn" readonly />
-        <input type="text" class="btn" readonly />
-      </div>
+    <div id="board" class="board"></div>
+    <div class="toggle">
+      <div class="text">Pick which side to play first</div>
+      <input type="checkbox" id="toggle-player" checked />
+      <label for="toggle-player"></label>
     </div>
-    <p class="result">payer x Turn</p>
-    <div class="reset">
-      <button id="reset">Reset</button>
+    <div class="btnWrapper">
+      <button id="prevBtn" class="button" disabled>
+        <span><i class="fa-solid fa-chevron-left"></i></span>
+      </button>
+      <div class="player">
+        <p class="result">Player X's turn</p>
+      </div>
+      <button id="nextBtn" class="button" disabled>
+        <span><i class="fa-solid fa-chevron-right"></i></i> </span>
+      </button>
     </div>
-    <script src="./assets/js/main.js"></script>
+    <div>
+      <button id="resetBtn">Reset <i class="fa-solid fa-rotate"></i></button>
+    </div>
+    <div class="winning-message" id="winningMessage">
+      <div data-winning-message-text></div>
+      <button id="restartButton">Restart</button>
+    </div>
+
+    <script src="./assets/js/script.js"></script>
   </body>
 </html>
