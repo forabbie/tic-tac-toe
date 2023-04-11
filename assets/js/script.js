@@ -97,23 +97,6 @@ const checkWinner = () => {
   // No winner
   return null;
 };
-const checkGameOver = () => {
-  const winner = checkWinner();
-  if (winner) {
-    gameOver = true;
-    showGameHistory();
-    result.innerHTML = `Player ${winner} Won`;
-    player.disabled = false;
-    return winner;
-  }
-  if (board.flat().every((cell) => cell !== null)) {
-    gameOver = true;
-    showGameHistory();
-    player.disabled = false;
-    return "Tie";
-  }
-  return null;
-};
 
 const showGameHistory = () => {
   const prevBtn = document.querySelector("#prevBtn");
@@ -134,6 +117,24 @@ const showGameHistory = () => {
     }
     tileWrapper.appendChild(row);
   }
+};
+
+const checkGameOver = () => {
+  const winner = checkWinner();
+  if (winner) {
+    gameOver = true;
+    showGameHistory();
+    result.innerHTML = `Player ${winner} Won`;
+    player.disabled = false;
+    return winner;
+  }
+  if (board.flat().every((cell) => cell !== null)) {
+    gameOver = true;
+    showGameHistory();
+    player.disabled = false;
+    return "Tie";
+  }
+  return null;
 };
 
 const prevBtn = document.querySelector("#prevBtn");
