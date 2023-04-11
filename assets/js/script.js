@@ -11,18 +11,17 @@ let currentMove = 0;
 let gameOver = false;
 let currentPlayer = "X";
 
-const player = document.getElementById("toggle-player");
+const chooseFirstPlayer = () => {
+  currentPlayer = currentPlayer === "X" ? "O" : "X";
+  result.innerHTML = `Player ${currentPlayer}'s turn`;
+};
 
+const player = document.getElementById("toggle-player");
 player.addEventListener("click", function () {
   chooseFirstPlayer();
 });
 
-function chooseFirstPlayer() {
-  currentPlayer = currentPlayer === "X" ? "O" : "X";
-  result.innerHTML = `Player ${currentPlayer}'s turn`;
-}
-
-function renderBoard() {
+const renderBoard = () => {
   const tileWrapper = document.querySelector("#board");
   tileWrapper.innerHTML = "";
   for (let i = 0; i < 3; i++) {
@@ -57,9 +56,9 @@ function renderBoard() {
     }
     tileWrapper.appendChild(row);
   }
-}
+};
 
-function checkWinner() {
+const checkWinner = () => {
   for (let i = 0; i < 3; i++) {
     // Check rows
     if (
@@ -97,8 +96,8 @@ function checkWinner() {
 
   // No winner
   return null;
-}
-function checkGameOver() {
+};
+const checkGameOver = () => {
   const winner = checkWinner();
   if (winner) {
     gameOver = true;
@@ -114,9 +113,9 @@ function checkGameOver() {
     return "Tie";
   }
   return null;
-}
+};
 
-function showGameHistory() {
+const showGameHistory = () => {
   const prevBtn = document.querySelector("#prevBtn");
   prevBtn.disabled = currentMove === 0;
   const nextBtn = document.querySelector("#nextBtn");
@@ -135,7 +134,7 @@ function showGameHistory() {
     }
     tileWrapper.appendChild(row);
   }
-}
+};
 
 const prevBtn = document.querySelector("#prevBtn");
 prevBtn.addEventListener("click", () => {
@@ -149,8 +148,7 @@ nextBtn.addEventListener("click", () => {
   showGameHistory();
 });
 
-const resetBtn = document.querySelector("#resetBtn");
-resetBtn.addEventListener("click", () => {
+const resetGame = () => {
   board.forEach((row, i) => {
     row.forEach((_, j) => {
       board[i][j] = null;
@@ -164,7 +162,10 @@ resetBtn.addEventListener("click", () => {
   prevBtn.disabled = true;
   nextBtn.disabled = true;
   player.disabled = false;
-});
+};
+
+const resetBtn = document.querySelector("#resetBtn");
+resetBtn.addEventListener("click", () => resetGame());
 
 renderBoard();
 
