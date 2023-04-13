@@ -164,7 +164,7 @@ body {
 .toggle input:checked + label:after {
   width: 6px;
   background-color: #fff;
-  transform: rotate(45deg) !important;
+  transform: rotate(45deg);
   top: 25%;
   left: 45%;
 }
@@ -226,7 +226,7 @@ body {
   flex-direction: column;
 }
 
-.winning-message button {
+.winning-message #restartButton {
   font-size: 3rem;
   background-color: white;
   border: 1px solid black;
@@ -234,7 +234,7 @@ body {
   cursor: pointer;
 }
 
-.winning-message button:hover {
+.winning-message #restartButton:hover {
   background-color: black;
   color: white;
   border-color: white;
