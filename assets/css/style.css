@@ -101,12 +101,10 @@ body {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 .button:disabled {
-  /* background-color: #9e9e9e; */
   cursor: not-allowed;
 }
 
 .toggle:before {
-  /* content: "OFF"; */
   position: absolute;
   left: -56px;
   top: 30px;
@@ -114,7 +112,6 @@ body {
   color: #fff;
 }
 .toggle:after {
-  /* content: "ON"; */
   position: absolute;
   right: -46px;
   top: 30px;
@@ -226,15 +223,18 @@ body {
   flex-direction: column;
 }
 
-.winning-message #restartButton {
-  font-size: 3rem;
-  background-color: white;
-  border: 1px solid black;
-  padding: 0.25em 0.5em;
-  cursor: pointer;
+.winning-message #closeButton {
+  margin-top: 3em;
+  color: black;
+  padding: 0.5em 1em;
+  font-size: 16px;
+  border-radius: 5em;
+  background: #fff;
+  border: 1px solid #fff;
+  transition: all 0.3s;
 }
 
-.winning-message #restartButton:hover {
+.winning-message #closeButton:hover {
   background-color: black;
   color: white;
   border-color: white;
@@ -242,4 +242,7 @@ body {
 
 .winning-message.show {
   display: flex;
+}
+.winning-message.show [data-winning-message-text] {
+  background-color: transparent;
 }

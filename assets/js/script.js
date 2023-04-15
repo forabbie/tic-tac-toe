@@ -1,11 +1,12 @@
 let result = document.querySelector(".result");
+const winningMessageElement = document.getElementById("winningMessage");
 const board = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
 
-let history = [{ board: board.map((row) => [...row]), turn: "X" }]; // deep copy of board
+let history = [{ board: board.map((row) => [...row]), turn: "X" }];
 
 let currentMove = 0;
 let gameOver = false;
@@ -24,10 +25,11 @@ player.addEventListener("click", function () {
 const renderBoard = () => {
   const tileWrapper = document.querySelector("#board");
   tileWrapper.innerHTML = "";
+  result.innerHTML = `Player ${currentPlayer}'s turn`;
   for (let i = 0; i < 3; i++) {
     const row = document.createElement("div");
     row.classList.add("row");
-    // console.log("col", i);
+    // console.log("row", i);
     for (let j = 0; j < 3; j++) {
       // console.log("col", j);
       const cell = document.createElement("span");
@@ -48,7 +50,7 @@ const renderBoard = () => {
             currentPlayer = currentPlayer === "X" ? "O" : "X";
             result.innerHTML = `Player ${currentPlayer}'s turn`;
           }
-          console.log("board", board);
+          // console.log("board", board);
           player.disabled = true;
         }
       });
@@ -117,22 +119,32 @@ const showGameHistory = () => {
     }
     tileWrapper.appendChild(row);
   }
+  console.log("history: ", history);
 };
 
 const checkGameOver = () => {
+  const winningMessageTextElement = document.querySelector(
+    "[data-winning-message-text]"
+  );
+  winningMessageElement.classList.remove("show");
   const winner = checkWinner();
   if (winner) {
     gameOver = true;
     showGameHistory();
     result.innerHTML = `Player ${winner} Won`;
     player.disabled = false;
+    winningMessageTextElement.textContent = `Player ${winner} Won`;
+    winningMessageElement.classList.add("show");
     return winner;
   }
   if (board.flat().every((cell) => cell !== null)) {
     gameOver = true;
     showGameHistory();
     player.disabled = false;
-    return "Tie";
+    result.innerHTML = `Draw`;
+    winningMessageTextElement.textContent = `Draw`;
+    winningMessageElement.classList.add("show");
+    return "Draw";
   }
   return null;
 };
@@ -155,9 +167,10 @@ const resetGame = () => {
       board[i][j] = null;
     });
   });
-  history = [{ board: board.map((row) => [...row]), turn: "X" }]; // deep copy of board
+  history = [{ board: board.map((row) => [...row]), turn: "X" }];
   currentMove = 0;
   gameOver = false;
+  player.checked = true;
   currentPlayer = "X";
   renderBoard();
   prevBtn.disabled = true;
@@ -168,6 +181,9 @@ const resetGame = () => {
 const resetBtn = document.querySelector("#resetBtn");
 resetBtn.addEventListener("click", () => resetGame());
 
-renderBoard();
+const closeButton = document.getElementById("closeButton");
+closeButton.addEventListener("click", () =>
+  winningMessageElement.classList.remove("show")
+);
 
-const toggle = document.querySelector("#toggle");
+renderBoard();
