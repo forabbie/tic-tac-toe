@@ -12,65 +12,68 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .header {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 15px;
+  h1 {
+    text-align: center;
+  }
 }
-.header h1 {
-  text-align: center;
-}
+
 .board {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   margin: 35px;
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cell {
+    height: 90px;
+    margin: 2px;
+    width: 90px;
+    font-size: 50px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.31);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1.8px);
+    -webkit-backdrop-filter: blur(1.8px);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(255, 255, 255);
+    }
+    &:disabled {
+      color: black;
+      cursor: no-drop;
+    }
+  }
 }
 
-.row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cell {
-  height: 90px;
-  margin: 2px;
-  width: 90px;
-  font-size: 50px;
-  font-weight: 500;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.31);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(1.8px);
-  -webkit-backdrop-filter: blur(1.8px);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-}
-.cell:hover {
-  cursor: pointer;
-  background-color: rgb(255, 255, 255);
-}
-
-.cell:disabled {
-  color: black;
-  cursor: no-drop;
-}
-
-.player {
-  border: 1.5px solid rgb(211, 211, 211);
-  border-radius: 14px;
-  margin: 1.5rem;
-  padding: 0.5rem;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
-}
 .btnWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .player {
+    border: 1.5px solid rgb(211, 211, 211);
+    border-radius: 14px;
+    margin: 1.5rem;
+    padding: 0.5rem;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+  }
 }
 
 .button {
@@ -87,24 +90,25 @@ body {
   backdrop-filter: blur(1.8px);
   -webkit-backdrop-filter: blur(1.8px);
   border: 1px solid rgba(255, 255, 255, 0.03);
+
+  &span {
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+    background-color: transparent;
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
-.button span {
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
-  background-color: transparent;
-}
 .button:not(:disabled):active {
   transition: all 0.1s ease-in-out;
   transform: translateY(4px);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
-.button:disabled {
-  cursor: not-allowed;
-}
 
-.toggle:before {
+.button .toggle:before {
   position: absolute;
   left: -56px;
   top: 30px;
@@ -243,9 +247,6 @@ body {
 .winning-message.show {
   display: flex;
 }
-.winning-message.show #winningMessageText {
+.winning-message.show [data-winning-message-text] {
   background-color: transparent;
-}
-.d-none {
-  visibility: hidden;
 }

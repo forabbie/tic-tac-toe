@@ -1,13 +1,15 @@
-let result = document.querySelector(".result");
-const winningMessageElement = document.getElementById("winningMessage");
 const board = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
 
-let history = [{ board: board.map((row) => [...row]), turn: "X" }];
+const winningMessageElement = document.getElementById("winningMessage");
+const prevBtn = document.querySelector("#prevBtn");
+const nextBtn = document.querySelector("#nextBtn");
 
+let result = document.querySelector(".result");
+let history = [{ board: board.map((row) => [...row]), turn: "X" }];
 let currentMove = 0;
 let gameOver = false;
 let currentPlayer = "X";
@@ -22,43 +24,42 @@ player.addEventListener("click", function () {
   chooseFirstPlayer();
 });
 
-const renderBoard = () => {
+const resetBtn = document.querySelector("#resetBtn");
+resetBtn.addEventListener("click", () => resetGame());
+
+const closeButton = document.getElementById("closeButton");
+closeButton.addEventListener("click", () =>
+  winningMessageElement.classList.remove("show")
+);
+
+const showGameHistory = () => {
+  prevBtn.disabled = currentMove === 0;
+  nextBtn.disabled = currentMove === history.length - 1;
   const tileWrapper = document.querySelector("#board");
   tileWrapper.innerHTML = "";
-  result.innerHTML = `Player ${currentPlayer}'s turn`;
+  const currentBoard = history[currentMove].board;
   for (let i = 0; i < 3; i++) {
     const row = document.createElement("div");
     row.classList.add("row");
-    // console.log("row", i);
     for (let j = 0; j < 3; j++) {
-      // console.log("col", j);
       const cell = document.createElement("span");
       cell.classList.add("cell");
-      cell.textContent = board[i][j];
-      cell.addEventListener("click", () => {
-        if (!gameOver && board[i][j] === null) {
-          board[i][j] = currentPlayer;
-          history = history.slice(0, currentMove + 1);
-          history.push({
-            board: board.map((row) => [...row]),
-            turn: currentPlayer,
-          });
-          currentMove++;
-          renderBoard();
-          checkGameOver();
-          if (!gameOver) {
-            currentPlayer = currentPlayer === "X" ? "O" : "X";
-            result.innerHTML = `Player ${currentPlayer}'s turn`;
-          }
-          // console.log("board", board);
-          player.disabled = true;
-        }
-      });
+      cell.textContent = currentBoard[i][j];
       row.appendChild(cell);
     }
     tileWrapper.appendChild(row);
   }
 };
+
+prevBtn.addEventListener("click", () => {
+  currentMove--;
+  showGameHistory();
+});
+
+nextBtn.addEventListener("click", () => {
+  currentMove++;
+  showGameHistory();
+});
 
 const checkWinner = () => {
   for (let i = 0; i < 3; i++) {
@@ -100,31 +101,9 @@ const checkWinner = () => {
   return null;
 };
 
-const showGameHistory = () => {
-  const prevBtn = document.querySelector("#prevBtn");
-  prevBtn.disabled = currentMove === 0;
-  const nextBtn = document.querySelector("#nextBtn");
-  nextBtn.disabled = currentMove === history.length - 1;
-  const tileWrapper = document.querySelector("#board");
-  tileWrapper.innerHTML = "";
-  const currentBoard = history[currentMove].board;
-  for (let i = 0; i < 3; i++) {
-    const row = document.createElement("div");
-    row.classList.add("row");
-    for (let j = 0; j < 3; j++) {
-      const cell = document.createElement("span");
-      cell.classList.add("cell");
-      cell.textContent = currentBoard[i][j];
-      row.appendChild(cell);
-    }
-    tileWrapper.appendChild(row);
-  }
-  console.log("history: ", history);
-};
-
 const checkGameOver = () => {
   const winningMessageTextElement = document.querySelector(
-    "[data-winning-message-text]"
+    "#winningMessageText"
   );
   winningMessageElement.classList.remove("show");
   const winner = checkWinner();
@@ -135,6 +114,8 @@ const checkGameOver = () => {
     player.disabled = false;
     winningMessageTextElement.textContent = `Player ${winner} Won`;
     winningMessageElement.classList.add("show");
+    prevBtn.classList.remove("d-none");
+    nextBtn.classList.remove("d-none");
     return winner;
   }
   if (board.flat().every((cell) => cell !== null)) {
@@ -144,28 +125,53 @@ const checkGameOver = () => {
     result.innerHTML = `Draw`;
     winningMessageTextElement.textContent = `Draw`;
     winningMessageElement.classList.add("show");
+    prevBtn.classList.remove("d-none");
+    nextBtn.classList.remove("d-none");
     return "Draw";
   }
   return null;
 };
 
-const prevBtn = document.querySelector("#prevBtn");
-prevBtn.addEventListener("click", () => {
-  currentMove--;
-  showGameHistory();
-});
+const renderBoard = () => {
+  const tileWrapper = document.querySelector("#board");
+  tileWrapper.innerHTML = "";
+  result.innerHTML = `Player ${currentPlayer}'s turn`;
+  for (let i = 0; i < 3; i++) {
+    const row = document.createElement("div");
+    row.classList.add("row");
+    for (let j = 0; j < 3; j++) {
+      const cell = document.createElement("span");
+      cell.classList.add("cell");
+      cell.textContent = board[i][j];
+      cell.addEventListener("click", () => {
+        if (!gameOver && board[i][j] === null) {
+          board[i][j] = currentPlayer;
+          history = history.slice(0, currentMove + 1);
+          history.push({
+            board: board.map((row) => [...row]),
+            turn: currentPlayer,
+          });
+          currentMove++;
+          renderBoard();
+          checkGameOver();
+          if (!gameOver) {
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+            result.innerHTML = `Player ${currentPlayer}'s turn`;
+          }
+          player.disabled = true;
+        }
+      });
+      row.appendChild(cell);
+    }
+    tileWrapper.appendChild(row);
+  }
+};
 
-const nextBtn = document.querySelector("#nextBtn");
-nextBtn.addEventListener("click", () => {
-  currentMove++;
-  showGameHistory();
-});
+renderBoard();
 
 const resetGame = () => {
-  board.forEach((row, i) => {
-    row.forEach((_, j) => {
-      board[i][j] = null;
-    });
+  board.forEach((row) => {
+    row.fill(null);
   });
   history = [{ board: board.map((row) => [...row]), turn: "X" }];
   currentMove = 0;
@@ -173,17 +179,9 @@ const resetGame = () => {
   player.checked = true;
   currentPlayer = "X";
   renderBoard();
+  prevBtn.classList.add("d-none");
+  nextBtn.classList.add("d-none");
   prevBtn.disabled = true;
   nextBtn.disabled = true;
   player.disabled = false;
 };
-
-const resetBtn = document.querySelector("#resetBtn");
-resetBtn.addEventListener("click", () => resetGame());
-
-const closeButton = document.getElementById("closeButton");
-closeButton.addEventListener("click", () =>
-  winningMessageElement.classList.remove("show")
-);
-
-renderBoard();
